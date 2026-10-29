@@ -38,7 +38,7 @@ export const PROFILE_DATA = {
     "Diseñador gráfico y multimedia. Combino criterio visual, estrategia y herramientas digitales para construir marcas y piezas con impacto.",
   bio:
     "Con más de 5 años de experiencia práctica, abordo cada proyecto con criterio visual y rigor técnico: desde cartelería y producción impresa hasta interfaces web y campañas digitales.",
-  location: "Yerba Buena / San Miguel de Tucumán, Argentina",
+  location: "Tucumán, Argentina",
   experienceYears: "+5 años",
   availability: "Disponible para proyectos independientes y colaboraciones estratégicas",
   contact: {

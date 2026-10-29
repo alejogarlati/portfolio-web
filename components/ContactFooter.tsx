@@ -129,7 +129,6 @@ export default function ContactFooter() {
           <span>
             Alejo Garlati — Diseño Gráfico & Comunicación Visual • Tucumán, Argentina
           </span>
-          <span>Portfolio Profesional Permanente</span>
         </div>
       </div>
     </footer>
