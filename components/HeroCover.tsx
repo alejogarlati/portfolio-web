@@ -185,12 +185,6 @@ export default function HeroCover() {
           </div>
         </div>
       </div>
-
-      {/* Pie de Portada */}
-      <div className="relative z-10 max-w-6xl mx-auto w-full px-6 sm:px-10 py-5 border-t border-white/[0.12] flex flex-wrap items-center justify-between gap-3 font-mono text-xs text-cover-footer">
-        <span>PORTFOLIO PROFESIONAL • DISEÑO & DESARROLLO</span>
-        <span>YERBA BUENA, TUCUMÁN</span>
-      </div>
     </header>
   );
 }
