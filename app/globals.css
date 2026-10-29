@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #151617;
+    color: #121314;
+  }
+
+  body {
+    background-color: #faf7f5;
+    color: #121314;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #9d6a4e;
+    color: #faf8f5;
+  }
+}
+
+/* ==========================================================================
+   CARDS & CONTENEDORES: Relleno sólido/plano (sin degradé interno)
+   ========================================================================== */
+
+/* Tarjetas claras con fondo sólido blanco y sombra nítida */
+.surface-glossy {
+  background-color: #ffffff;
+  box-shadow: 
+    0 4px 20px -4px rgba(18, 19, 20, 0.04),
+    0 1px 3px 0 rgba(18, 19, 20, 0.02);
+}
+
+/* Tarjeta activa con realce perimetral cobre */
+.surface-glossy-active {
+  background-color: #ffffff;
+  box-shadow: 
+    0 10px 28px -6px rgba(157, 106, 78, 0.14),
+    0 0 0 1px rgba(157, 106, 78, 0.35);
+}
+
+/* Tarjetas y badges secundarios con fondo crema sólido */
+.surface-cream-glossy {
+  background-color: #f4efe7;
+}
+
+/* Bordes arquitectónicos nítidos */
+.border-glossy {
+  border: 1px solid #e5e0d7;
+}
+
+/* ==========================================================================
+   FONDOS Y AMBIENTE: Luces y sombras pronunciadas (-10% a -15% de la prop. 1)
+   ========================================================================== */
+
+/* Fondo Canvas Claro (Secciones 01, 02 y 04) - Atmósfera con luces y sombras envolventes */
+.canvas-ambient-light {
+  background-color: #faf7f5;
+  background-image: 
+    radial-gradient(ellipse 95% 65% at 50% 0%, rgba(255, 255, 255, 0.82) 0%, transparent 72%),
+    radial-gradient(ellipse 75% 55% at 85% 60%, rgba(213, 176, 153, 0.062) 0%, transparent 62%),
+    radial-gradient(ellipse 80% 50% at 15% 90%, rgba(226, 221, 212, 0.45) 0%, transparent 70%);
+}
+
+/* Fondo Galería Dark (Sección 03: Proyectos) - Iluminación escénica pronunciada */
+.dark-gallery-ambient {
+  background-color: #121315;
+  background-image: 
+    radial-gradient(circle 850px at 50% 10%, rgba(213, 176, 153, 0.078) 0%, transparent 72%),
+    radial-gradient(circle 950px at 85% 85%, rgba(157, 106, 78, 0.052) 0%, transparent 65%),
+    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(0, 0, 0, 0.45) 0%, transparent 80%);
+}
+
+/* ==========================================================================
+   TARJETAS DE PROYECTOS (SECCIÓN 03): Relleno carbón sólido (sin degradé)
+   ========================================================================== */
+.card-dark-glossy {
+  background-color: #17181a;
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+}
+
+.card-dark-glossy:hover {
+  background-color: #1c1d21;
+  box-shadow: 
+    0 16px 40px -10px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(213, 176, 153, 0.25);
+}
+
+/* Scrollbar Editorial */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #151617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3a3b3e;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9d6a4e;
+}
