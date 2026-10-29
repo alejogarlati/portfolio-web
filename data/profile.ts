@@ -164,7 +164,7 @@ export const PROFILE_DATA = {
       shortTitle: "Branding",
       claim: "Identidades visuales con criterio, coherencia y valor comercial.",
       subclaim: "Logotipos, sistemas tipográficos, manuales de uso y papelería corporativa lista para imprenta.",
-      image: "/services/service-01-branding.png",
+      image: "/services/service-01-branding.webp",
     },
     {
       num: "02",
@@ -172,7 +172,7 @@ export const PROFILE_DATA = {
       shortTitle: "Cartelería",
       claim: "Gráfica a gran escala para espacios comerciales y arquitectónicos.",
       subclaim: "Vallas de obra, cartelería de salón, tótems de acceso y sistemas de señalización direccional.",
-      image: "/services/service-02-carteleria.png",
+      image: "/services/service-02-carteleria.webp",
     },
     {
       num: "03",
@@ -180,7 +180,7 @@ export const PROFILE_DATA = {
       shortTitle: "Editorial",
       claim: "Piezas editoriales pensadas para respaldar la gestión de ventas.",
       subclaim: "Dossiers inmobiliarios, catálogos técnicos, trípticos informativos y presentaciones ejecutivas.",
-      image: "/services/service-03-editorial.png",
+      image: "/services/service-03-editorial.webp",
     },
     {
       num: "04",
@@ -188,7 +188,7 @@ export const PROFILE_DATA = {
       shortTitle: "Web & UI",
       claim: "Interfaces funcionales que unen sensibilidad visual y viabilidad técnica.",
       subclaim: "Diseño de landing pages, cabeceras para Tiendanube y activos optimizados para desarrollo.",
-      image: "/services/service-04-web-ui.png",
+      image: "/services/service-04-web-ui.webp",
     },
     {
       num: "05",
@@ -196,7 +196,7 @@ export const PROFILE_DATA = {
       shortTitle: "Social Ads",
       claim: "Piezas digitales diseñadas para captar atención y generar conversión.",
       subclaim: "Sistemas de feed, carruseles informativos y creatividades publicitarias para Meta Ads.",
-      image: "/services/service-05-social-media.png",
+      image: "/services/service-05-social-media.webp",
     },
   ] as ServiceScopeItem[],
 };

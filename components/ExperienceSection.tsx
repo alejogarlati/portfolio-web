@@ -3,12 +3,7 @@
 import React from "react";
 import { PROFILE_DATA } from "@/data/profile";
 import { useScrollStepper } from "@/hooks/useScrollStepper";
-import {
-  Briefcase,
-  ChevronLeft,
-  ChevronRight,
-  Compass,
-} from "lucide-react";
+import { Briefcase, Compass } from "lucide-react";
 
 export default function ExperienceSection() {
   const pillars = PROFILE_DATA.pillars;
@@ -51,9 +46,6 @@ export default function ExperienceSection() {
                   01. PERFIL & CRITERIO
                 </span>
               </div>
-              <span className="font-mono text-[10px] sm:text-[11px] tracking-[0.14em] uppercase text-pebble">
-                0{pillarStepper.activeIndex + 1} / 0{pillars.length}
-              </span>
             </div>
 
             {/* Grilla Principal del Escenario */}
@@ -73,9 +65,8 @@ export default function ExperienceSection() {
                   {PROFILE_DATA.bio}
                 </p>
 
-                {/* Selector de Breakpoints */}
+                {/* Selector de Breakpoints (sin flechas ni indicadores numéricos) */}
                 <div className="pt-1 lg:pt-3 space-y-2">
-                  {/* Barra de Progreso Continua */}
                   <div className="w-full h-1 bg-hairline rounded-full overflow-hidden">
                     <div
                       className="h-full bg-copper transition-all duration-300 ease-out"
@@ -88,7 +79,6 @@ export default function ExperienceSection() {
                     />
                   </div>
 
-                  {/* Botones de Paso */}
                   <div className="flex lg:flex-col gap-1.5 sm:gap-2">
                     {pillars.map((pillar, idx) => {
                       const isActive = pillarStepper.activeIndex === idx;
@@ -109,10 +99,7 @@ export default function ExperienceSection() {
                                 isActive ? "bg-copper" : "bg-hairline"
                               }`}
                             />
-                            <span className="font-mono text-[11px] font-bold text-copper lg:hidden">
-                              0{idx + 1}
-                            </span>
-                            <span className="text-xs truncate hidden lg:inline">
+                            <span className="text-xs truncate">
                               {pillar.title}
                             </span>
                           </div>
@@ -122,40 +109,6 @@ export default function ExperienceSection() {
                         </button>
                       );
                     })}
-
-                    {/* Flechas Rápidas en Móvil */}
-                    <div className="flex lg:hidden items-center gap-1 shrink-0">
-                      <button
-                        type="button"
-                        onClick={() =>
-                          pillarStepper.goToStep(
-                            pillarStepper.activeIndex - 1,
-                            "smooth"
-                          )
-                        }
-                        disabled={pillarStepper.activeIndex === 0}
-                        aria-label="Anterior pilar"
-                        className="w-7 h-7 rounded-[3px] bg-surface border border-hairline flex items-center justify-center text-ink disabled:opacity-30"
-                      >
-                        <ChevronLeft className="w-3.5 h-3.5" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() =>
-                          pillarStepper.goToStep(
-                            pillarStepper.activeIndex + 1,
-                            "smooth"
-                          )
-                        }
-                        disabled={
-                          pillarStepper.activeIndex === pillars.length - 1
-                        }
-                        aria-label="Siguiente pilar"
-                        className="w-7 h-7 rounded-[3px] bg-surface border border-hairline flex items-center justify-center text-ink disabled:opacity-30"
-                      >
-                        <ChevronRight className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -177,12 +130,9 @@ export default function ExperienceSection() {
                           : "absolute inset-x-0 z-10 opacity-0 translate-y-6 scale-[0.98] pointer-events-none surface-glossy border-glossy"
                       }`}
                     >
-                      <div className="flex items-center justify-between pb-3 mb-3.5 sm:pb-4 sm:mb-5 border-b border-hairline">
+                      <div className="pb-3 mb-3.5 sm:pb-4 sm:mb-5 border-b border-hairline">
                         <span className="font-mono text-[11px] sm:text-xs font-bold tracking-[0.16em] uppercase text-copper">
                           {pillar.code}
-                        </span>
-                        <span className="font-mono text-[10px] sm:text-[11px] text-pebble">
-                          0{idx + 1} / 0{pillars.length}
                         </span>
                       </div>
 
@@ -193,24 +143,6 @@ export default function ExperienceSection() {
                       <p className="text-xs sm:text-base text-body leading-relaxed">
                         {pillar.description}
                       </p>
-
-                      <div className="mt-4 pt-3 sm:mt-6 sm:pt-4 border-t border-hairline flex items-center justify-between">
-                        <span className="font-mono text-[10px] uppercase tracking-widest text-pebble">
-                          CRITERIO OPERATIVO
-                        </span>
-                        <div className="flex items-center gap-1.5">
-                          {pillars.map((_, dotIdx) => (
-                            <span
-                              key={dotIdx}
-                              className={`h-1.5 rounded-full transition-all duration-300 ${
-                                dotIdx === idx
-                                  ? "w-6 bg-copper"
-                                  : "w-1.5 bg-hairline"
-                              }`}
-                            />
-                          ))}
-                        </div>
-                      </div>
                     </div>
                   );
                 })}
@@ -228,15 +160,10 @@ export default function ExperienceSection() {
       <div id="experiencia" className="scroll-mt-16">
         {/* VISTA MÓVIL / TABLET (< lg): Scroll natural directo */}
         <div className="lg:hidden max-w-6xl mx-auto px-4 sm:px-8 py-14 sm:py-20">
-          <div className="mb-6 pb-3 border-b border-hairline flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Briefcase className="w-3.5 h-3.5 text-copper" />
-              <span className="font-mono text-[11px] font-bold tracking-[0.16em] uppercase text-copper">
-                TRAYECTORIA PROFESIONAL
-              </span>
-            </div>
-            <span className="font-mono text-[10px] tracking-[0.14em] uppercase text-pebble">
-              {experiences.length} ETAPAS
+          <div className="mb-6 pb-3 border-b border-hairline flex items-center gap-2">
+            <Briefcase className="w-3.5 h-3.5 text-copper" />
+            <span className="font-mono text-[11px] font-bold tracking-[0.16em] uppercase text-copper">
+              TRAYECTORIA PROFESIONAL
             </span>
           </div>
 
@@ -315,15 +242,10 @@ export default function ExperienceSection() {
             className="sticky top-0 h-[100dvh] w-full flex flex-col justify-center py-14 overflow-hidden select-none"
           >
             <div className="max-w-6xl mx-auto px-10 w-full flex flex-col justify-center">
-              <div className="mb-8 pb-4 border-b border-hairline flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Briefcase className="w-3.5 h-3.5 text-copper" />
-                  <span className="font-mono text-xs font-bold tracking-[0.16em] uppercase text-copper">
-                    TRAYECTORIA PROFESIONAL
-                  </span>
-                </div>
-                <span className="font-mono text-[11px] tracking-[0.14em] uppercase text-pebble">
-                  ETAPA 0{expStepper.activeIndex + 1} / 0{experiences.length}
+              <div className="mb-8 pb-4 border-b border-hairline flex items-center gap-2">
+                <Briefcase className="w-3.5 h-3.5 text-copper" />
+                <span className="font-mono text-xs font-bold tracking-[0.16em] uppercase text-copper">
+                  TRAYECTORIA PROFESIONAL
                 </span>
               </div>
 
