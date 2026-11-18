@@ -1,14 +1,14 @@
 "use client";
 
 import React from "react";
-import { ArrowDownRight, FileText, Globe, MessageCircle } from "lucide-react";
+import { ArrowDownRight, FileText, MessageCircle } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { getProfileData } from "@/data/profile";
 import { UI_COPY } from "@/data/ui";
 import Hero3DCanvas from "./Hero3DCanvas";
 
 export default function HeroCover() {
-  const { lang, setLang } = useLanguage();
+  const { lang } = useLanguage();
   const profile = getProfileData(lang);
   const copy = UI_COPY[lang].hero;
 
@@ -73,41 +73,9 @@ export default function HeroCover() {
           </a>
         </nav>
 
-        <div className="flex items-center gap-4 ml-auto lg:ml-0">
-          <span className="font-mono text-xs tracking-[0.14em] uppercase text-[#9e9b95] hidden sm:inline">
-            {copy.archiveTag}
-          </span>
-
-          {/* Language Switcher ES / EN */}
-          <div
-            role="group"
-            aria-label={copy.langSwitchAria}
-            className="inline-flex items-center p-0.5 bg-white/[0.04] border border-white/[0.14] rounded-[3px] shrink-0"
-          >
-            <Globe
-              className="w-3.5 h-3.5 text-copper-light ml-2 mr-1.5 hidden sm:block"
-              aria-hidden="true"
-            />
-            {(["es", "en"] as const).map((code) => {
-              const isActive = lang === code;
-              return (
-                <button
-                  key={code}
-                  type="button"
-                  onClick={() => setLang(code)}
-                  aria-pressed={isActive}
-                  className={`px-2.5 py-1 rounded-[2px] font-mono text-[11px] tracking-[0.14em] uppercase transition-colors ${
-                    isActive
-                      ? "bg-copper-light text-cover font-bold shadow-sm"
-                      : "text-cover-secondary hover:text-cover-text"
-                  }`}
-                >
-                  {code.toUpperCase()}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+        <span className="font-mono text-xs tracking-[0.14em] uppercase text-[#9e9b95] hidden sm:inline">
+          {copy.archiveTag}
+        </span>
       </div>
 
       {/* Cuerpo Principal de Portada */}
