@@ -132,7 +132,7 @@ export default function ProjectsShowcase() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={copy.behanceAria}
-            className="group relative overflow-hidden w-full flex items-center justify-center gap-3.5 px-6 py-4 sm:py-5 rounded-[4px] border border-white/[0.07] hover:border-copper-light/45 bg-white/[0.02] hover:bg-[#1c1d21] opacity-75 hover:opacity-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] hover:shadow-[0_16px_40px_-10px_rgba(0,0,0,0.75),0_0_24px_rgba(213,176,153,0.12),inset_0_1px_0_rgba(255,255,255,0.22)] transition-all duration-300 ease-out active:scale-[0.995]"
+            className="group relative overflow-hidden w-full flex items-center justify-center gap-3.5 px-6 py-5 md:py-7 rounded-[4px] border border-white/[0.07] hover:border-copper-light/45 bg-white/[0.02] hover:bg-[#1c1d21] opacity-75 hover:opacity-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] hover:shadow-[0_16px_40px_-10px_rgba(0,0,0,0.75),0_0_24px_rgba(213,176,153,0.12),inset_0_1px_0_rgba(255,255,255,0.22)] transition-all duration-300 ease-out active:scale-[0.995]"
           >
             {/* Resplandor superior sutil */}
             <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/15 group-hover:via-copper-light/50 to-transparent transition-colors duration-300 pointer-events-none" />
