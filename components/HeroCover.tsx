@@ -1,11 +1,17 @@
 "use client";
 
 import React from "react";
-import { ArrowDownRight, FileText, MessageCircle } from "lucide-react";
-import { PROFILE_DATA } from "@/data/profile";
+import { ArrowDownRight, FileText, Globe, MessageCircle } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { getProfileData } from "@/data/profile";
+import { UI_COPY } from "@/data/ui";
 import Hero3DCanvas from "./Hero3DCanvas";
 
 export default function HeroCover() {
+  const { lang, setLang } = useLanguage();
+  const profile = getProfileData(lang);
+  const copy = UI_COPY[lang].hero;
+
   return (
     <header className="relative bg-cover text-cover-text min-h-[92svh] sm:min-h-[96vh] flex flex-col justify-between overflow-hidden border-b border-black pb-[calc(env(safe-area-inset-bottom,0px)+0.5rem)]">
       {/* Escena 3D Interactiva */}
@@ -30,7 +36,7 @@ export default function HeroCover() {
             <div className="w-[1px] h-4 bg-cover-text/90 absolute left-1.5 bottom-0" />
           </div>
           <span className="font-mono text-xs sm:text-[13px] tracking-[0.14em] uppercase text-cover-text font-bold">
-            ALEJO GARLATI • DISEÑO GRÁFICO & MULTIMEDIA
+            {copy.brandTag}
           </span>
         </div>
 
@@ -39,37 +45,69 @@ export default function HeroCover() {
             href="#enfoque"
             className="hover:text-copper-light transition-colors py-1"
           >
-            01. Enfoque
+            {copy.nav.approach}
           </a>
           <a
             href="#experiencia"
             className="hover:text-copper-light transition-colors py-1"
           >
-            02. Trayectoria
+            {copy.nav.experience}
           </a>
           <a
             href="#servicios"
             className="hover:text-copper-light transition-colors py-1"
           >
-            03. Servicios
+            {copy.nav.services}
           </a>
           <a
             href="#proyectos"
             className="hover:text-copper-light transition-colors py-1"
           >
-            04. Proyectos
+            {copy.nav.projects}
           </a>
           <a
             href="#contacto"
             className="hover:text-copper-light transition-colors py-1"
           >
-            05. Contacto
+            {copy.nav.contact}
           </a>
         </nav>
 
-        <span className="font-mono text-xs tracking-[0.14em] uppercase text-[#9e9b95] hidden sm:inline">
-          PORTFOLIO & ARCHIVO VISUAL
-        </span>
+        <div className="flex items-center gap-4 ml-auto lg:ml-0">
+          <span className="font-mono text-xs tracking-[0.14em] uppercase text-[#9e9b95] hidden sm:inline">
+            {copy.archiveTag}
+          </span>
+
+          {/* Language Switcher ES / EN */}
+          <div
+            role="group"
+            aria-label={copy.langSwitchAria}
+            className="inline-flex items-center p-0.5 bg-white/[0.04] border border-white/[0.14] rounded-[3px] shrink-0"
+          >
+            <Globe
+              className="w-3.5 h-3.5 text-copper-light ml-2 mr-1.5 hidden sm:block"
+              aria-hidden="true"
+            />
+            {(["es", "en"] as const).map((code) => {
+              const isActive = lang === code;
+              return (
+                <button
+                  key={code}
+                  type="button"
+                  onClick={() => setLang(code)}
+                  aria-pressed={isActive}
+                  className={`px-2.5 py-1 rounded-[2px] font-mono text-[11px] tracking-[0.14em] uppercase transition-colors ${
+                    isActive
+                      ? "bg-copper-light text-cover font-bold shadow-sm"
+                      : "text-cover-secondary hover:text-cover-text"
+                  }`}
+                >
+                  {code.toUpperCase()}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {/* Cuerpo Principal de Portada */}
@@ -77,17 +115,17 @@ export default function HeroCover() {
         <div className="max-w-3xl">
           {/* Eyebrow editorial */}
           <p className="font-mono text-xs sm:text-sm tracking-[0.24em] uppercase text-copper-light font-bold mb-7">
-            C R E A T I V I D A D &nbsp; V I S U A L &nbsp; • &nbsp; E S T R A T E G I A &nbsp; D I G I T A L
+            {copy.eyebrow}
           </p>
 
           {/* Título Principal Editorial */}
           <h1 className="text-4xl sm:text-5xl lg:text-[60px] font-bold text-cover-text tracking-tight leading-[1.08] mb-8">
-            Diseño gráfico, comunicación visual y experiencias digitales.
+            {copy.title}
           </h1>
 
           {/* Bajada descriptiva */}
           <p className="text-base sm:text-lg lg:text-xl text-[#a6a39d] leading-relaxed max-w-2xl mb-12">
-            {PROFILE_DATA.headline}
+            {profile.headline}
           </p>
 
           {/* Monograma [ AG ] con marcas de corte */}
@@ -107,28 +145,28 @@ export default function HeroCover() {
                 href="#proyectos"
                 className="px-6 py-3.5 bg-copper-light text-cover font-mono text-xs font-bold uppercase tracking-[0.14em] rounded-[3px] hover:bg-cover-text transition-colors inline-flex items-center gap-2.5 shadow-sm"
               >
-                <span>Ver Proyectos</span>
+                <span>{copy.ctaProjects}</span>
                 <ArrowDownRight className="w-4 h-4" />
               </a>
 
               <a
-                href={PROFILE_DATA.contact.whatsappUrl}
+                href={profile.contact.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 border border-white/20 bg-white/[0.03] text-cover-text font-mono text-xs font-medium uppercase tracking-[0.14em] rounded-[3px] hover:border-copper-light hover:text-copper-light transition-colors inline-flex items-center gap-2.5"
               >
                 <MessageCircle className="w-4 h-4 text-copper-light" />
-                <span>Conversar por WhatsApp</span>
+                <span>{copy.ctaWhatsapp}</span>
               </a>
 
               <a
-                href={PROFILE_DATA.contact.cvUrl}
+                href={profile.contact.cvUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 py-3.5 border border-white/10 text-cover-secondary font-mono text-xs uppercase tracking-[0.12em] rounded-[3px] hover:text-cover-text hover:border-white/25 transition-colors inline-flex items-center gap-2"
               >
                 <FileText className="w-4 h-4 text-copper-light" />
-                <span>CV (PDF)</span>
+                <span>{copy.ctaCv}</span>
               </a>
             </div>
           </div>
@@ -138,49 +176,49 @@ export default function HeroCover() {
         <div className="bg-white/[0.032] border border-white/[0.12] rounded-[4px] p-8 sm:p-9 backdrop-blur-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <span className="block font-mono text-[10px] tracking-[0.2em] uppercase text-cover-muted mb-2">
-              P E R F I L &nbsp; P R O F E S I O N A L
+              {copy.specs.profileLabel}
             </span>
             <p className="text-base font-bold text-cover-text">
-              {PROFILE_DATA.shortName}
+              {profile.shortName}
             </p>
             <p className="text-xs text-cover-secondary mt-1">
-              Diseño Gráfico, Multimedia & UI
+              {copy.specs.profileRole}
             </p>
           </div>
 
           <div>
             <span className="block font-mono text-[10px] tracking-[0.2em] uppercase text-cover-muted mb-2">
-              F O R M A C I Ó N &nbsp; T É C N I C A
+              {copy.specs.educationLabel}
             </span>
             <p className="text-base font-bold text-cover-text">
-              Diseño + Programación
+              {copy.specs.educationTitle}
             </p>
             <p className="text-xs text-cover-secondary mt-1">
-              UTN — Fac. Regional Tucumán
+              {copy.specs.educationSub}
             </p>
           </div>
 
           <div>
             <span className="block font-mono text-[10px] tracking-[0.2em] uppercase text-cover-muted mb-2">
-              U B I C A C I Ó N &nbsp; Y &nbsp; A L C A N C E
+              {copy.specs.locationLabel}
             </span>
             <p className="text-base font-bold text-cover-text">
-              Tucumán, Argentina
+              {profile.location}
             </p>
             <p className="text-xs text-cover-secondary mt-1">
-              Trabajo presencial y remoto
+              {copy.specs.locationSub}
             </p>
           </div>
 
           <div>
             <span className="block font-mono text-[10px] tracking-[0.2em] uppercase text-cover-muted mb-2">
-              C A N A L E S &nbsp; D I R E C T O S
+              {copy.specs.channelsLabel}
             </span>
             <p className="text-base font-bold text-copper-light">
-              {PROFILE_DATA.contact.phoneDisplay}
+              {profile.contact.phoneDisplay}
             </p>
             <p className="text-xs text-cover-secondary mt-1">
-              {PROFILE_DATA.contact.email}
+              {profile.contact.email}
             </p>
           </div>
         </div>

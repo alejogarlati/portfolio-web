@@ -2,27 +2,37 @@
 
 import React, { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
-import { PROFILE_DATA } from "@/data/profile";
+import { useLanguage } from "@/context/LanguageContext";
+import { getProfileData } from "@/data/profile";
 import {
-  PROJECT_CATEGORIES,
-  PROJECTS_DATA,
+  getProjectCategories,
+  getProjectsData,
   ProjectCategory,
-  ProjectItem,
 } from "@/data/projects";
+import { UI_COPY } from "@/data/ui";
 import ProjectCard from "./ProjectCard";
 import ProjectModal from "./ProjectModal";
 
 export default function ProjectsShowcase() {
+  const { lang } = useLanguage();
+  const profile = getProfileData(lang);
+  const categories = getProjectCategories(lang);
+  const projects = getProjectsData(lang);
+  const copy = UI_COPY[lang].projects;
+
   const [activeCategory, setActiveCategory] =
     useState<ProjectCategory>("todos");
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     null
   );
 
+  const selectedProject =
+    projects.find((p) => p.id === selectedProjectId) ?? null;
+
   const filteredProjects =
     activeCategory === "todos"
-      ? PROJECTS_DATA
-      : PROJECTS_DATA.filter((p) => p.category === activeCategory);
+      ? projects
+      : projects.filter((p) => p.category === activeCategory);
 
   return (
     <section
@@ -41,24 +51,24 @@ export default function ProjectsShowcase() {
               <div className="w-[1px] h-3 bg-copper-light/80 absolute left-1 bottom-0" />
             </div>
             <span className="font-mono text-xs font-bold tracking-[0.18em] uppercase text-copper-light/90">
-              DOSSIER VISUAL & ARCHIVO
+              {copy.dossierTag}
             </span>
           </div>
           <span className="font-mono text-xs tracking-[0.14em] uppercase text-cover-secondary hidden sm:inline">
-            03. PROYECTOS SELECCIONADOS
+            {copy.sectionCode}
           </span>
         </div>
 
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
           <div>
             <p className="font-mono text-xs font-bold tracking-[0.16em] uppercase text-copper-light/80 mb-3">
-              GALERÍA PRINCIPAL
+              {copy.galleryEyebrow}
             </p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-cover-text tracking-tight">
-              Obras y piezas por área de especialidad
+              {copy.heading}
             </h2>
             <p className="text-base text-cover-secondary mt-3 max-w-2xl leading-relaxed">
-              Exploración de proyectos en cartelería comercial, sistemas de señalética física, identidades corporativas, infografías de obra y diseño web.
+              {copy.subtitle}
             </p>
           </div>
 
@@ -66,13 +76,13 @@ export default function ProjectsShowcase() {
           <div
             className="flex flex-wrap gap-2.5 pt-2"
             role="tablist"
-            aria-label="Filtrar proyectos por categoría"
+            aria-label={copy.filterAria}
           >
-            {PROJECT_CATEGORIES.map((cat) => {
+            {categories.map((cat) => {
               const count =
                 cat.id === "todos"
-                  ? PROJECTS_DATA.length
-                  : PROJECTS_DATA.filter((p) => p.category === cat.id).length;
+                  ? projects.length
+                  : projects.filter((p) => p.category === cat.id).length;
               const isActive = activeCategory === cat.id;
 
               return (
@@ -110,7 +120,7 @@ export default function ProjectsShowcase() {
             <ProjectCard
               key={project.id}
               project={project}
-              onSelect={(proj) => setSelectedProject(proj)}
+              onSelect={(proj) => setSelectedProjectId(proj.id)}
             />
           ))}
         </div>
@@ -118,10 +128,10 @@ export default function ProjectsShowcase() {
         {/* Acceso a Portfolio Completo en Behance */}
         <div className="mt-14 sm:mt-16 flex justify-center">
           <a
-            href={PROFILE_DATA.contact.behance}
+            href={profile.contact.behance}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Ver más proyectos de Alejo Garlati en Behance"
+            aria-label={copy.behanceAria}
             className="group relative overflow-hidden inline-flex items-center gap-3.5 px-8 sm:px-10 py-4 sm:py-4.5 rounded-[4px] border border-white/[0.14] hover:border-white/30 bg-gradient-to-b from-[#24262b] via-[#17181b] to-[#0e0f11] shadow-[0_8px_28px_-6px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.18),inset_0_-1px_0_rgba(0,0,0,0.4)] hover:shadow-[0_12px_36px_-6px_rgba(0,0,0,0.8),0_0_20px_rgba(255,255,255,0.06),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all duration-300 hover:scale-[1.01] active:scale-[0.99]"
           >
             {/* Resplandor superior nítido */}
@@ -141,7 +151,7 @@ export default function ProjectsShowcase() {
 
             {/* Texto brilloso grisáceo claro */}
             <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-transparent bg-clip-text bg-gradient-to-b from-white via-[#dcdfe4] to-[#9fa4ad] group-hover:from-white group-hover:via-[#f3f4f6] group-hover:to-[#d1d5db] drop-shadow-[0_1px_1px_rgba(0,0,0,0.8)]">
-              Ver más proyectos
+              {copy.behanceCta}
             </span>
 
             {/* Flecha exterior con microinteracción */}
@@ -152,7 +162,7 @@ export default function ProjectsShowcase() {
         {/* Modal de Inspección Técnica */}
         <ProjectModal
           project={selectedProject}
-          onClose={() => setSelectedProject(null)}
+          onClose={() => setSelectedProjectId(null)}
         />
       </div>
     </section>
