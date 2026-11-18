@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    agentUpgrade: "security",
+  },
   allowedDevOrigins: [
     "192.168.1.32",
     "192.168.1.32:3000",

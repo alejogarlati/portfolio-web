@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Space_Grotesk } from "next/font/google";
+import { LanguageProvider } from "@/context/LanguageContext";
+import LanguageSwitch from "@/components/LanguageSwitch";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -58,7 +60,10 @@ export default function RootLayout({
         suppressHydrationWarning
         className="font-sans bg-canvas text-ink antialiased"
       >
-        {children}
+        <LanguageProvider>
+          {children}
+          <LanguageSwitch />
+        </LanguageProvider>
       </body>
     </html>
   );

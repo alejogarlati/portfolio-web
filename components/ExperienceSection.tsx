@@ -1,13 +1,18 @@
 "use client";
 
 import React from "react";
-import { PROFILE_DATA } from "@/data/profile";
+import { useLanguage } from "@/context/LanguageContext";
+import { getProfileData } from "@/data/profile";
+import { UI_COPY } from "@/data/ui";
 import { useScrollStepper } from "@/hooks/useScrollStepper";
 import { Briefcase, Compass } from "lucide-react";
 
 export default function ExperienceSection() {
-  const pillars = PROFILE_DATA.pillars;
-  const experiences = PROFILE_DATA.experiences;
+  const { lang } = useLanguage();
+  const profile = getProfileData(lang);
+  const copy = UI_COPY[lang];
+  const pillars = profile.pillars;
+  const experiences = profile.experiences;
 
   const pillarStepper = useScrollStepper({
     totalSteps: pillars.length,
@@ -43,7 +48,7 @@ export default function ExperienceSection() {
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 bg-copper rounded-[1px]" />
                 <span className="font-mono text-[10px] sm:text-xs font-bold tracking-[0.16em] uppercase text-copper">
-                  01. PERFIL & CRITERIO
+                  {copy.approach.sectionCode}
                 </span>
               </div>
             </div>
@@ -54,15 +59,15 @@ export default function ExperienceSection() {
               <div className="lg:col-span-5 space-y-2.5 sm:space-y-4 lg:space-y-6">
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 surface-cream-glossy border border-hairline font-mono text-[10px] font-bold uppercase tracking-wider text-copper rounded-[2px]">
                   <Compass className="w-3 h-3" />
-                  <span>Enfoque de Trabajo</span>
+                  <span>{copy.approach.badge}</span>
                 </div>
 
                 <h2 className="text-xl sm:text-3xl lg:text-4xl font-bold text-ink tracking-tight leading-[1.15]">
-                  Diseño con visión comercial, rigor técnico y criterio visual
+                  {copy.approach.heading}
                 </h2>
 
                 <p className="text-xs sm:text-sm lg:text-base text-body leading-relaxed hidden sm:block">
-                  {PROFILE_DATA.bio}
+                  {profile.bio}
                 </p>
 
                 {/* Selector de Breakpoints (sin flechas ni indicadores numéricos) */}
@@ -163,12 +168,12 @@ export default function ExperienceSection() {
           <div className="mb-6 pb-3 border-b border-hairline flex items-center gap-2">
             <Briefcase className="w-3.5 h-3.5 text-copper" />
             <span className="font-mono text-[11px] font-bold tracking-[0.16em] uppercase text-copper">
-              TRAYECTORIA PROFESIONAL
+              {copy.experience.sectionCode}
             </span>
           </div>
 
           <h2 className="text-2xl sm:text-3xl font-bold text-ink tracking-tight leading-tight mb-6">
-            Experiencia en empresas, agencias y proyectos
+            {copy.experience.heading}
           </h2>
 
           <div className="space-y-4 sm:space-y-5">
@@ -245,20 +250,18 @@ export default function ExperienceSection() {
               <div className="mb-8 pb-4 border-b border-hairline flex items-center gap-2">
                 <Briefcase className="w-3.5 h-3.5 text-copper" />
                 <span className="font-mono text-xs font-bold tracking-[0.16em] uppercase text-copper">
-                  TRAYECTORIA PROFESIONAL
+                  {copy.experience.sectionCode}
                 </span>
               </div>
 
               <div className="grid grid-cols-12 gap-14 items-center">
                 <div className="col-span-5 space-y-6">
                   <h2 className="text-4xl font-bold text-ink tracking-tight leading-tight">
-                    Experiencia en empresas, agencias y proyectos
+                    {copy.experience.heading}
                   </h2>
 
                   <p className="text-sm text-body leading-relaxed">
-                    Más de 5 años desarrollando comunicación visual, gestión de
-                    e-commerce, campañas digitales y producción gráfica para el
-                    sector comercial, constructivo e inmobiliario.
+                    {copy.experience.summary}
                   </p>
 
                   <div className="space-y-2">

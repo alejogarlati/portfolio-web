@@ -17,7 +17,9 @@ import {
   ZoomOut,
   X,
 } from "lucide-react";
+import { Language, useLanguage } from "@/context/LanguageContext";
 import { ProjectItem } from "@/data/projects";
+import { UI_COPY } from "@/data/ui";
 
 interface ProjectModalProps {
   project: ProjectItem | null;
@@ -33,106 +35,178 @@ type PieceCategory =
   | "landscape"
   | "panoramic";
 
-function classifyRatio(w: number, h: number): {
+function classifyRatio(
+  w: number,
+  h: number,
+  lang: Language
+): {
   type: PieceCategory;
   badge: string;
 } {
+  const badges = UI_COPY[lang].modal.ratioBadges;
   const r = w / h;
   if (r <= 0.3) {
-    return { type: "web-scroll", badge: "LANDING COMPLETA • SCROLL VERTICAL" };
+    return { type: "web-scroll", badge: badges.webScroll };
   }
   if (r < 0.45) {
-    return { type: "totem", badge: "FORMATO TÓTEM VERTICAL" };
+    return { type: "totem", badge: badges.totem };
   }
   if (r <= 0.65) {
-    return { type: "story-9-16", badge: "FORMATO VERTICAL 9:16" };
+    return { type: "story-9-16", badge: badges.story916 };
   }
   if (r <= 0.9) {
-    return { type: "post-4-5", badge: "FORMATO FEED 4:5" };
+    return { type: "post-4-5", badge: badges.post45 };
   }
   if (r <= 1.15) {
-    return { type: "square-1-1", badge: "FORMATO 1:1" };
+    return { type: "square-1-1", badge: badges.square11 };
   }
   if (r >= 2.15) {
     return {
       type: "panoramic",
-      badge: r > 3 ? "BANNER PANORÁMICO 4:1" : "PANTALLA WIDESCREEN 2.5:1",
+      badge: r > 3 ? badges.panoramic41 : badges.widescreen251,
     };
   }
-  return { type: "landscape", badge: "LÁMINA HORIZONTAL" };
+  return { type: "landscape", badge: badges.landscape };
 }
 
-function getReadablePieceTitle(url: string, idx: number): string {
+function getReadablePieceTitle(
+  url: string,
+  idx: number,
+  lang: Language
+): string {
   const raw = decodeURIComponent(url.split("/").pop() || "").replace(
     /\.(png|jpg|jpeg|webp)$/i,
     ""
   );
-  if (!raw) return `Pieza 0${idx + 1}`;
+  if (!raw) return UI_COPY[lang].modal.pieceFallback(`0${idx + 1}`);
 
-  const map: Record<string, string> = {
-    "Feed preview - muestra": "Feed Preview — Sistema Visual",
-    "Stories preview - muestra 1": "Stories Preview — Muestra 01",
-    "Stories preview - muestra 2": "Stories Preview — Muestra 02",
-    "Jun posteo 7 - I 1": "Carrusel Junio — Portada (1/5)",
-    "Jun posteo 7 - I 2": "Carrusel Junio — Desarrollo (2/5)",
-    "Jun posteo 7 - I 3": "Carrusel Junio — Desarrollo (3/5)",
-    "Jun posteo 7 - I 4": "Carrusel Junio — Desarrollo (4/5)",
-    "Jun posteo 7 - I 5": "Carrusel Junio — Cierre (5/5)",
-    "Sep posteo 1R 1": "Pieza Vertical — Lanzamiento Septiembre",
-    "Sep posteo 2 - I 1": "Carrusel Septiembre — Portada (1/4)",
-    "Sep posteo 2 - I 2": "Carrusel Septiembre — Desarrollo (2/4)",
-    "Sep posteo 2 - I 3": "Carrusel Septiembre — Desarrollo (3/4)",
-    "Sep posteo 2 - I 4": "Carrusel Septiembre — Cierre (4/4)",
-    "Oct form1 - G 1": "Banner de Cabecera para Formulario",
-    "PPT - Bienvenidos": "Pantalla Widescreen — Bienvenidos",
-    "PPT - Permanente": "Pantalla Widescreen — Permanente",
-    "PPT - Sponsors": "Pantalla Widescreen — Sponsors",
-    "Totem - Logo": "Tótem Físico Vertical — Acceso",
-    "Flyer agotadas - I 1": "Flyer — Entradas Agotadas",
-    "Certificado Sponsors - 1": "Certificado en Lote — Muestra 01",
-    "Certificado Sponsors - 2": "Certificado en Lote — Muestra 02",
-    Landing: "Mockup Completo — Landing Page",
-    "Paleta Landing SP": "Sistema Cromático & Componentes UI",
-    "Triptico 1 - Mockup": "Tríptico Institucional 01 — Mockup",
-    "Triptico 2 - Mockup": "Tríptico Institucional 02 — Mockup",
-    "Etiquetas navidad - circulares 50mm preview":
-      "Etiquetas Circulares 50mm — Preview",
-    "Sorteo cookies - I 3": "Aplicación de Etiqueta en Producto",
-    "Pascuas 2026 S 1": "Etiquetas Especiales — Pascuas 2026",
-    "tarjeta-1-cara-1": "Tarjeta Personal — Frente (Original Imprenta)",
-    "tarjeta-1-cara-2": "Tarjeta Personal — Dorso (Original Imprenta)",
-    "AD-Buisness-Card-Free-Mockup": "Presentación de Tarjetas en Mockup",
-    "Propuesta pharmatuk - 1": "Propuesta de Identidad Visual",
-    "Feed preview - general": "Preview General de Grilla en Feed",
-    "Corregido - Pack lifting - S 1": "Banner Vertical — Pack Lifting",
-    "Corregido - Pack rec. muscular - S 1":
-      "Banner Vertical — Recuperación Muscular",
-    "Corregido - Pack fiestas - S 1": "Banner Vertical — Pack Fiestas",
-    "Perfil IG Oscuro": "Isotipo sobre Fondo Oscuro",
-    "Perfil IG Oscuro bg": "Isotipo con Textura de Marca",
-    "fussion-behance-full": "Presentación Continua Behance (Scroll)",
-    "fussion-section-1": "Briefing Fussion — Portada & Concepto",
-    "fussion-section-2": "Briefing Fussion — Enfoque Estratégico",
-    "fussion-section-3": "Briefing Fussion — Propuesta de Valor",
-    "fussion-section-4": "Briefing Fussion — Servicios & Soluciones",
-    "fussion-section-5": "Briefing Fussion — Alcance de Marca",
-    "fussion-section-6": "Briefing Fussion — Metodología & Planificación",
-    "fussion-section-7": "Briefing Fussion — Planes Comerciales",
-    "fussion-section-8": "Briefing Fussion — Detalle de Entregables",
-    "fussion-section-9": "Briefing Fussion — Redes & Performance",
-    "fussion-section-10": "Briefing Fussion — Mockup 3D & Dirección de Arte",
-    "fussion-section-11": "Briefing Fussion — Identidad & Cierre",
-    "fussion-page-1": "Dossier Fussion — Portada (1/5)",
-    "fussion-page-2": "Dossier Fussion — Alcance (2/5)",
-    "fussion-page-3": "Dossier Fussion — Planes (3/5)",
-    "fussion-page-4": "Dossier Fussion — Entregables (4/5)",
-    "fussion-page-5": "Dossier Fussion — Cierre (5/5)",
+  const mapByLang: Record<Language, Record<string, string>> = {
+    es: {
+      "Feed preview - muestra": "Feed Preview — Sistema Visual",
+      "Stories preview - muestra 1": "Stories Preview — Muestra 01",
+      "Stories preview - muestra 2": "Stories Preview — Muestra 02",
+      "Jun posteo 7 - I 1": "Carrusel Junio — Portada (1/5)",
+      "Jun posteo 7 - I 2": "Carrusel Junio — Desarrollo (2/5)",
+      "Jun posteo 7 - I 3": "Carrusel Junio — Desarrollo (3/5)",
+      "Jun posteo 7 - I 4": "Carrusel Junio — Desarrollo (4/5)",
+      "Jun posteo 7 - I 5": "Carrusel Junio — Cierre (5/5)",
+      "Sep posteo 1R 1": "Pieza Vertical — Lanzamiento Septiembre",
+      "Sep posteo 2 - I 1": "Carrusel Septiembre — Portada (1/4)",
+      "Sep posteo 2 - I 2": "Carrusel Septiembre — Desarrollo (2/4)",
+      "Sep posteo 2 - I 3": "Carrusel Septiembre — Desarrollo (3/4)",
+      "Sep posteo 2 - I 4": "Carrusel Septiembre — Cierre (4/4)",
+      "Oct form1 - G 1": "Banner de Cabecera para Formulario",
+      "PPT - Bienvenidos": "Pantalla Widescreen — Bienvenidos",
+      "PPT - Permanente": "Pantalla Widescreen — Permanente",
+      "PPT - Sponsors": "Pantalla Widescreen — Sponsors",
+      "Totem - Logo": "Tótem Físico Vertical — Acceso",
+      "Flyer agotadas - I 1": "Flyer — Entradas Agotadas",
+      "Certificado Sponsors - 1": "Certificado en Lote — Muestra 01",
+      "Certificado Sponsors - 2": "Certificado en Lote — Muestra 02",
+      Landing: "Mockup Completo — Landing Page",
+      "Paleta Landing SP": "Sistema Cromático & Componentes UI",
+      "Triptico 1 - Mockup": "Tríptico Institucional 01 — Mockup",
+      "Triptico 2 - Mockup": "Tríptico Institucional 02 — Mockup",
+      "Etiquetas navidad - circulares 50mm preview":
+        "Etiquetas Circulares 50mm — Preview",
+      "Sorteo cookies - I 3": "Aplicación de Etiqueta en Producto",
+      "Pascuas 2026 S 1": "Etiquetas Especiales — Pascuas 2026",
+      "tarjeta-1-cara-1": "Tarjeta Personal — Frente (Original Imprenta)",
+      "tarjeta-1-cara-2": "Tarjeta Personal — Dorso (Original Imprenta)",
+      "AD-Buisness-Card-Free-Mockup": "Presentación de Tarjetas en Mockup",
+      "Propuesta pharmatuk - 1": "Propuesta de Identidad Visual",
+      "Feed preview - general": "Preview General de Grilla en Feed",
+      "Corregido - Pack lifting - S 1": "Banner Vertical — Pack Lifting",
+      "Corregido - Pack rec. muscular - S 1":
+        "Banner Vertical — Recuperación Muscular",
+      "Corregido - Pack fiestas - S 1": "Banner Vertical — Pack Fiestas",
+      "Perfil IG Oscuro": "Isotipo sobre Fondo Oscuro",
+      "Perfil IG Oscuro bg": "Isotipo con Textura de Marca",
+      "fussion-behance-full": "Presentación Continua Behance (Scroll)",
+      "fussion-section-1": "Briefing Fussion — Portada & Concepto",
+      "fussion-section-2": "Briefing Fussion — Enfoque Estratégico",
+      "fussion-section-3": "Briefing Fussion — Propuesta de Valor",
+      "fussion-section-4": "Briefing Fussion — Servicios & Soluciones",
+      "fussion-section-5": "Briefing Fussion — Alcance de Marca",
+      "fussion-section-6": "Briefing Fussion — Metodología & Planificación",
+      "fussion-section-7": "Briefing Fussion — Planes Comerciales",
+      "fussion-section-8": "Briefing Fussion — Detalle de Entregables",
+      "fussion-section-9": "Briefing Fussion — Redes & Performance",
+      "fussion-section-10": "Briefing Fussion — Mockup 3D & Dirección de Arte",
+      "fussion-section-11": "Briefing Fussion — Identidad & Cierre",
+      "fussion-page-1": "Dossier Fussion — Portada (1/5)",
+      "fussion-page-2": "Dossier Fussion — Alcance (2/5)",
+      "fussion-page-3": "Dossier Fussion — Planes (3/5)",
+      "fussion-page-4": "Dossier Fussion — Entregables (4/5)",
+      "fussion-page-5": "Dossier Fussion — Cierre (5/5)",
+    },
+    en: {
+      "Feed preview - muestra": "Feed Preview — Visual System",
+      "Stories preview - muestra 1": "Stories Preview — Sample 01",
+      "Stories preview - muestra 2": "Stories Preview — Sample 02",
+      "Jun posteo 7 - I 1": "June Carousel — Cover (1/5)",
+      "Jun posteo 7 - I 2": "June Carousel — Slide (2/5)",
+      "Jun posteo 7 - I 3": "June Carousel — Slide (3/5)",
+      "Jun posteo 7 - I 4": "June Carousel — Slide (4/5)",
+      "Jun posteo 7 - I 5": "June Carousel — Closing (5/5)",
+      "Sep posteo 1R 1": "Vertical Piece — September Launch",
+      "Sep posteo 2 - I 1": "September Carousel — Cover (1/4)",
+      "Sep posteo 2 - I 2": "September Carousel — Slide (2/4)",
+      "Sep posteo 2 - I 3": "September Carousel — Slide (3/4)",
+      "Sep posteo 2 - I 4": "September Carousel — Closing (4/4)",
+      "Oct form1 - G 1": "Lead Form Header Banner",
+      "PPT - Bienvenidos": "Widescreen Display — Welcome",
+      "PPT - Permanente": "Widescreen Display — Looping",
+      "PPT - Sponsors": "Widescreen Display — Sponsors",
+      "Totem - Logo": "Vertical Physical Totem — Entrance",
+      "Flyer agotadas - I 1": "Flyer — Sold Out",
+      "Certificado Sponsors - 1": "Batch Certificate — Sample 01",
+      "Certificado Sponsors - 2": "Batch Certificate — Sample 02",
+      Landing: "Full Mockup — Landing Page",
+      "Paleta Landing SP": "Color System & UI Components",
+      "Triptico 1 - Mockup": "Institutional Tri-Fold 01 — Mockup",
+      "Triptico 2 - Mockup": "Institutional Tri-Fold 02 — Mockup",
+      "Etiquetas navidad - circulares 50mm preview":
+        "50mm Circular Labels — Preview",
+      "Sorteo cookies - I 3": "Label Application on Product",
+      "Pascuas 2026 S 1": "Special Labels — Easter 2026",
+      "tarjeta-1-cara-1": "Business Card — Front (Print Original)",
+      "tarjeta-1-cara-2": "Business Card — Back (Print Original)",
+      "AD-Buisness-Card-Free-Mockup": "Business Card Presentation Mockup",
+      "Propuesta pharmatuk - 1": "Visual Identity Proposal",
+      "Feed preview - general": "General Feed Grid Preview",
+      "Corregido - Pack lifting - S 1": "Vertical Banner — Lifting Pack",
+      "Corregido - Pack rec. muscular - S 1":
+        "Vertical Banner — Muscle Recovery",
+      "Corregido - Pack fiestas - S 1": "Vertical Banner — Holiday Pack",
+      "Perfil IG Oscuro": "Logomark on Dark Background",
+      "Perfil IG Oscuro bg": "Logomark with Brand Texture",
+      "fussion-behance-full": "Continuous Behance Presentation (Scroll)",
+      "fussion-section-1": "Fussion Briefing — Cover & Concept",
+      "fussion-section-2": "Fussion Briefing — Strategic Approach",
+      "fussion-section-3": "Fussion Briefing — Value Proposition",
+      "fussion-section-4": "Fussion Briefing — Services & Solutions",
+      "fussion-section-5": "Fussion Briefing — Brand Scope",
+      "fussion-section-6": "Fussion Briefing — Methodology & Planning",
+      "fussion-section-7": "Fussion Briefing — Commercial Plans",
+      "fussion-section-8": "Fussion Briefing — Deliverables Detail",
+      "fussion-section-9": "Fussion Briefing — Social & Performance",
+      "fussion-section-10": "Fussion Briefing — 3D Mockup & Art Direction",
+      "fussion-section-11": "Fussion Briefing — Identity & Closing",
+      "fussion-page-1": "Fussion Dossier — Cover (1/5)",
+      "fussion-page-2": "Fussion Dossier — Scope (2/5)",
+      "fussion-page-3": "Fussion Dossier — Plans (3/5)",
+      "fussion-page-4": "Fussion Dossier — Deliverables (4/5)",
+      "fussion-page-5": "Fussion Dossier — Closing (5/5)",
+    },
   };
 
-  return map[raw] || raw;
+  return mapByLang[lang][raw] || raw;
 }
 
 export default function ProjectModal({ project, onClose }: ProjectModalProps) {
+  const { lang } = useLanguage();
+  const copy = UI_COPY[lang].modal;
   const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [isLightbox, setIsLightbox] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -193,8 +267,8 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
   if (!project) return null;
 
   const currentImage = images[activeImgIndex] || project.image;
-  const pieceInfo = classifyRatio(imgDims.w, imgDims.h);
-  const pieceTitle = getReadablePieceTitle(currentImage, activeImgIndex);
+  const pieceInfo = classifyRatio(imgDims.w, imgDims.h, lang);
+  const pieceTitle = getReadablePieceTitle(currentImage, activeImgIndex, lang);
   const isPdf = project.externalUrl?.endsWith(".pdf");
   const isWeb = project.externalUrl?.startsWith("http");
 
@@ -248,7 +322,9 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
           <div className="px-4 py-3.5 sm:px-7 sm:py-5 border-b border-hairline flex items-start justify-between gap-3 bg-surface shrink-0">
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.12em] text-copper font-bold mb-0.5">
-                <span>FICHA #{project.num}</span>
+                <span>
+                  {copy.specPrefix} #{project.num}
+                </span>
                 <span>•</span>
                 <span className="truncate">{project.client}</span>
                 <span className="hidden sm:inline">•</span>
@@ -265,7 +341,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
             <button
               type="button"
               onClick={onClose}
-              aria-label="Cerrar ficha técnica"
+              aria-label={copy.closeAria}
               className="w-9 h-9 rounded-[3px] bg-cream border border-hairline flex items-center justify-center text-ink hover:border-copper hover:text-copper transition-colors shrink-0"
             >
               <X className="w-4 h-4" />
@@ -307,12 +383,12 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                       {isZoomed ? (
                         <>
                           <ZoomOut className="w-3.5 h-3.5" />
-                          <span>Ajustar</span>
+                          <span>{copy.fit}</span>
                         </>
                       ) : (
                         <>
                           <ZoomIn className="w-3.5 h-3.5 text-copper" />
-                          <span>Zoom 2x</span>
+                          <span>{copy.zoom2x}</span>
                         </>
                       )}
                     </button>
@@ -324,7 +400,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     className="px-2.5 py-1 rounded-[2px] font-mono text-[10px] sm:text-[11px] font-bold bg-cream text-ink border border-hairline hover:border-copper transition-colors flex items-center gap-1"
                   >
                     <Maximize2 className="w-3.5 h-3.5 text-copper" />
-                    <span className="hidden xs:inline">Ampliar</span>
+                    <span className="hidden xs:inline">{copy.expand}</span>
                   </button>
                 </div>
               </div>
@@ -344,11 +420,11 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         <span className="w-2 h-2 rounded-full bg-white/25" />
                         <span className="w-2 h-2 rounded-full bg-white/25" />
                         <span className="ml-1.5 text-white/90 font-bold">
-                          VISTA MOCKUP COMPLETO
+                          {copy.fullMockupView}
                         </span>
                       </div>
                       <span className="text-copper-light">
-                        Deslizá hacia abajo para recorrer la landing ↕
+                        {copy.scrollHint}
                       </span>
                     </div>
                     <div
@@ -377,14 +453,14 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     <div className="px-3 py-1.5 bg-copper/20 border-b border-copper/30 flex items-center justify-between text-[10px] font-mono text-copper-light">
                       <span className="flex items-center gap-1.5">
                         <Move className="w-3 h-3" />
-                        Arrastrá para inspeccionar los detalles y textos
+                        {copy.dragHint}
                       </span>
                       <button
                         type="button"
                         onClick={() => setIsZoomed(false)}
                         className="underline font-bold"
                       >
-                        Salir de zoom
+                        {copy.exitZoom}
                       </button>
                     </div>
                     <div
@@ -450,7 +526,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         e.stopPropagation();
                         handlePrev();
                       }}
-                      aria-label="Pieza anterior"
+                      aria-label={copy.prevPieceAria}
                       className="absolute left-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/75 text-white border border-white/25 flex items-center justify-center hover:bg-copper active:scale-95 transition-all shadow-lg z-10"
                     >
                       <ChevronLeft className="w-5 h-5" />
@@ -461,7 +537,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                         e.stopPropagation();
                         handleNext();
                       }}
-                      aria-label="Siguiente pieza"
+                      aria-label={copy.nextPieceAria}
                       className="absolute right-2.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-black/75 text-white border border-white/25 flex items-center justify-center hover:bg-copper active:scale-95 transition-all shadow-lg z-10"
                     >
                       <ChevronRight className="w-5 h-5" />
@@ -481,7 +557,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     onClick={() => setIsZoomed((z) => !z)}
                     className="text-copper font-bold hover:underline"
                   >
-                    {isZoomed ? "Restaurar vista" : "Tocar imagen para Zoom 2x"}
+                    {isZoomed ? copy.resetView : copy.tapZoomHint}
                   </button>
                 )}
               </div>
@@ -501,7 +577,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                     >
                       <img
                         src={imgUrl}
-                        alt={`Miniatura ${idx + 1}`}
+                        alt={`${copy.thumbnailAlt} ${idx + 1}`}
                         className="w-full h-full object-cover"
                       />
                       <span className="absolute bottom-0.5 right-0.5 px-1 bg-black/75 text-white font-mono text-[8px] rounded-[1px]">
@@ -520,7 +596,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               <div className="md:col-span-7 space-y-4">
                 <div>
                   <h4 className="font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-copper mb-1.5">
-                    ALCANCE & OBJETIVO DEL TRABAJO
+                    {copy.scopeHeading}
                   </h4>
                   <p className="text-xs sm:text-sm text-body leading-relaxed">
                     {project.summary}
@@ -529,7 +605,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
 
                 <div>
                   <h4 className="font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-ink mb-2">
-                    PIEZAS Y ENTREGABLES GENERADOS
+                    {copy.deliverablesHeading}
                   </h4>
                   <ul className="space-y-1.5">
                     {project.deliverables.map((item, idx) => (
@@ -549,7 +625,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 <div className="bg-cream/70 border border-hairline rounded-[4px] p-4">
                   <div className="flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-ink mb-1.5">
                     <Layers className="w-3.5 h-3.5 text-copper" />
-                    <span>ESPECIFICACIONES TÉCNICAS</span>
+                    <span>{copy.specsHeading}</span>
                   </div>
                   <p className="text-xs text-body leading-relaxed font-mono">
                     {project.specs}
@@ -578,7 +654,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
               rel="noopener noreferrer"
               className="font-mono text-[11px] text-copper font-bold hover:underline inline-flex items-center gap-1"
             >
-              <span>Ver archivo original HD</span>
+              <span>{copy.viewOriginalHd}</span>
               <ExternalLink className="w-3 h-3" />
             </a>
 
@@ -591,7 +667,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-cream border border-hairline font-mono text-[11px] font-bold uppercase tracking-wider text-ink rounded-[3px] hover:border-copper hover:text-copper transition-colors inline-flex items-center gap-1.5"
                 >
                   <FileText className="w-3.5 h-3.5 text-copper" />
-                  <span>Brief (PDF)</span>
+                  <span>{copy.briefPdf}</span>
                 </a>
               )}
 
@@ -603,7 +679,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   className="px-3 py-1.5 sm:px-4 sm:py-2 bg-cream border border-hairline font-mono text-[11px] font-bold uppercase tracking-wider text-ink rounded-[3px] hover:border-copper hover:text-copper transition-colors inline-flex items-center gap-1.5"
                 >
                   <Globe className="w-3.5 h-3.5 text-copper" />
-                  <span>Sitio Web</span>
+                  <span>{copy.website}</span>
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
               )}
@@ -625,7 +701,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 onClick={onClose}
                 className="px-3.5 py-1.5 sm:px-4 sm:py-2 border border-hairline font-mono text-[11px] uppercase tracking-wider text-body hover:text-ink rounded-[3px]"
               >
-                Cerrar
+                {copy.close}
               </button>
             </div>
           </div>
@@ -650,7 +726,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 {pieceTitle}
               </p>
               <p className="font-mono text-[10px] text-white/60">
-                Pieza {activeImgIndex + 1} de {images.length} • {imgDims.w}×
+                {copy.pieceOf(activeImgIndex + 1, images.length)} • {imgDims.w}×
                 {imgDims.h} px
               </p>
             </div>
@@ -669,12 +745,12 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                   {isZoomed ? (
                     <>
                       <ZoomOut className="w-3.5 h-3.5" />
-                      <span>Ajustar</span>
+                      <span>{copy.fit}</span>
                     </>
                   ) : (
                     <>
                       <ZoomIn className="w-3.5 h-3.5" />
-                      <span>Zoom 2x</span>
+                      <span>{copy.zoom2x}</span>
                     </>
                   )}
                 </button>
@@ -684,7 +760,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 type="button"
                 onClick={() => setIsLightbox(false)}
                 className="w-9 h-9 rounded-[3px] bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-colors"
-                aria-label="Cerrar pantalla completa"
+                aria-label={copy.exitFullscreenAria}
               >
                 <Minimize2 className="w-4 h-4" />
               </button>
@@ -724,7 +800,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-[3px] font-mono text-xs flex items-center gap-1"
               >
                 <ChevronLeft className="w-4 h-4" />
-                <span>Anterior</span>
+                <span>{copy.previous}</span>
               </button>
 
               <span className="font-mono text-xs text-white/70">
@@ -736,7 +812,7 @@ export default function ProjectModal({ project, onClose }: ProjectModalProps) {
                 onClick={handleNext}
                 className="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-[3px] font-mono text-xs flex items-center gap-1"
               >
-                <span>Siguiente</span>
+                <span>{copy.next}</span>
                 <ChevronRight className="w-4 h-4" />
               </button>
             </div>

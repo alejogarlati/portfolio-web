@@ -1,11 +1,15 @@
 "use client";
 
 import React from "react";
-import { PROFILE_DATA } from "@/data/profile";
+import { useLanguage } from "@/context/LanguageContext";
+import { getProfileData } from "@/data/profile";
+import { UI_COPY } from "@/data/ui";
 import { useScrollStepper } from "@/hooks/useScrollStepper";
 
 export default function ServicesScope() {
-  const services = PROFILE_DATA.services;
+  const { lang } = useLanguage();
+  const services = getProfileData(lang).services;
+  const copy = UI_COPY[lang].services;
   const serviceStepper = useScrollStepper({
     totalSteps: services.length,
     PauseMs: 520,
@@ -23,10 +27,10 @@ export default function ServicesScope() {
       <div className="lg:hidden max-w-6xl mx-auto px-4 sm:px-8 py-14 sm:py-20">
         <div className="mb-6">
           <p className="font-mono text-[11px] font-bold tracking-[0.16em] uppercase text-copper mb-1.5">
-            02. SERVICIOS & ESPECIALIDADES
+            {copy.sectionCode}
           </p>
           <h2 className="text-2xl sm:text-3xl font-bold text-ink tracking-tight leading-tight">
-            Áreas de trabajo y capacidades técnicas
+            {copy.heading}
           </h2>
         </div>
 
@@ -80,10 +84,10 @@ export default function ServicesScope() {
             {/* Cabecera Editorial */}
             <div className="mb-6">
               <p className="font-mono text-xs font-bold tracking-[0.16em] uppercase text-copper mb-2">
-                02. SERVICIOS & ESPECIALIDADES
+                {copy.sectionCode}
               </p>
               <h2 className="text-4xl font-bold text-ink tracking-tight leading-tight">
-                Áreas de trabajo y capacidades técnicas
+                {copy.heading}
               </h2>
             </div>
 

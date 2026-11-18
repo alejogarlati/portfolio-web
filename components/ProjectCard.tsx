@@ -2,7 +2,9 @@
 
 import React, { useState } from "react";
 import { ArrowUpRight, Eye, Image as ImageIcon } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 import { ProjectItem } from "@/data/projects";
+import { UI_COPY } from "@/data/ui";
 
 interface ProjectCardProps {
   project: ProjectItem;
@@ -10,6 +12,8 @@ interface ProjectCardProps {
 }
 
 export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
+  const { lang } = useLanguage();
+  const copy = UI_COPY[lang].projects;
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -36,7 +40,7 @@ export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
                 <ImageIcon className="w-8 h-8 text-copper-light/60 mx-auto" />
                 <p className="text-xs font-bold text-cover-text">{project.title}</p>
                 <p className="font-mono text-[9px] text-[#7a7873]">
-                  AG STUDIO • ARCHIVO GRÁFICO
+                  {copy.archiveFallback}
                 </p>
               </div>
               <span className="font-mono text-[9px] text-cover-secondary">
@@ -54,10 +58,10 @@ export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
         {/* Cuerpo de la Tarjeta */}
         <div className="p-7">
           <div className="flex items-center justify-between gap-2 mb-2.5">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-copper-light">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-copper-light">
               {project.discipline}
             </span>
-            <span className="font-mono text-[11px] text-cover-muted">
+            <span className="font-mono text-[11px] text-cover-muted shrink-0 whitespace-nowrap">
               {project.year}
             </span>
           </div>
@@ -70,7 +74,7 @@ export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
           </h3>
 
           <p className="text-xs font-semibold text-cover-secondary mt-1">
-            Cliente: {project.client}
+            {copy.clientPrefix} {project.client}
           </p>
 
           <p className="text-xs sm:text-[13px] text-[#9a9fa7] leading-relaxed mt-3.5 line-clamp-3">
@@ -99,7 +103,7 @@ export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
           className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-cover-text hover:text-copper-light inline-flex items-center gap-1.5 transition-colors"
         >
           <Eye className="w-3.5 h-3.5 text-copper-light" />
-          <span>Ver Ficha Técnica</span>
+          <span>{copy.viewSpecSheet}</span>
         </button>
 
         {project.behanceUrl && (
