@@ -58,10 +58,10 @@ export default function ProjectCard({ project, onSelect }: ProjectCardProps) {
         {/* Cuerpo de la Tarjeta */}
         <div className="p-7">
           <div className="flex items-center justify-between gap-2 mb-2.5">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-copper-light">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.08em] text-copper-light">
               {project.discipline}
             </span>
-            <span className="font-mono text-[11px] text-cover-muted">
+            <span className="font-mono text-[11px] text-cover-muted shrink-0 whitespace-nowrap">
               {project.year}
             </span>
           </div>

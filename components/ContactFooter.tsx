@@ -35,7 +35,7 @@ export default function ContactFooter() {
               <h3 className="text-xl sm:text-2xl font-bold text-ink">
                 {profile.shortName}
               </h3>
-              <p className="font-mono text-xs font-bold uppercase tracking-[0.14em] text-copper">
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] sm:tracking-[0.12em] text-copper">
                 {profile.role}
               </p>
               <p className="text-xs sm:text-sm text-pebble pt-1">

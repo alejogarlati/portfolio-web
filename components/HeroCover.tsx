@@ -35,12 +35,12 @@ export default function HeroCover() {
             <div className="w-full h-[1px] bg-cover-text/90 absolute top-1.5" />
             <div className="w-[1px] h-4 bg-cover-text/90 absolute left-1.5 bottom-0" />
           </div>
-          <span className="font-mono text-xs sm:text-[13px] tracking-[0.14em] uppercase text-cover-text font-bold">
+          <span className="font-mono text-xs sm:text-[13px] tracking-[0.1em] xl:tracking-[0.14em] uppercase text-cover-text font-bold">
             {copy.brandTag}
           </span>
         </div>
 
-        <nav className="hidden lg:flex items-center gap-8 font-mono text-xs tracking-[0.12em] uppercase text-cover-secondary">
+        <nav className="hidden lg:flex items-center gap-5 xl:gap-8 font-mono text-xs tracking-[0.08em] xl:tracking-[0.12em] uppercase text-cover-secondary">
           <a
             href="#enfoque"
             className="hover:text-copper-light transition-colors py-1"
@@ -73,7 +73,7 @@ export default function HeroCover() {
           </a>
         </nav>
 
-        <span className="font-mono text-xs tracking-[0.14em] uppercase text-[#9e9b95] hidden sm:inline">
+        <span className="font-mono text-xs tracking-[0.1em] xl:tracking-[0.14em] uppercase text-[#9e9b95] hidden sm:inline">
           {copy.archiveTag}
         </span>
       </div>
@@ -82,7 +82,13 @@ export default function HeroCover() {
       <div className="relative z-10 max-w-6xl mx-auto w-full px-6 sm:px-10 py-20 md:py-32 my-auto">
         <div className="max-w-3xl">
           {/* Eyebrow editorial */}
-          <p className="font-mono text-xs sm:text-sm tracking-[0.24em] uppercase text-copper-light font-bold mb-7">
+          <p
+            className={`font-mono text-xs sm:text-sm uppercase text-copper-light font-bold mb-7 ${
+              lang === "en"
+                ? "tracking-[0.16em] sm:tracking-[0.2em]"
+                : "tracking-[0.24em]"
+            }`}
+          >
             {copy.eyebrow}
           </p>
 
@@ -143,7 +149,11 @@ export default function HeroCover() {
         {/* Ficha Técnica Inferior de Perfil con más respiro */}
         <div className="bg-white/[0.032] border border-white/[0.12] rounded-[4px] p-8 sm:p-9 backdrop-blur-sm grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <span className="block font-mono text-[10px] tracking-[0.2em] uppercase text-cover-muted mb-2">
+            <span
+              className={`block font-mono text-[10px] uppercase text-cover-muted mb-2 ${
+                lang === "en" ? "tracking-[0.14em]" : "tracking-[0.2em]"
+              }`}
+            >
               {copy.specs.profileLabel}
             </span>
             <p className="text-base font-bold text-cover-text">
@@ -155,7 +165,11 @@ export default function HeroCover() {
           </div>
 
           <div>
-            <span className="block font-mono text-[10px] tracking-[0.2em] uppercase text-cover-muted mb-2">
+            <span
+              className={`block font-mono text-[10px] uppercase text-cover-muted mb-2 ${
+                lang === "en" ? "tracking-[0.14em]" : "tracking-[0.2em]"
+              }`}
+            >
               {copy.specs.educationLabel}
             </span>
             <p className="text-base font-bold text-cover-text">
@@ -167,7 +181,11 @@ export default function HeroCover() {
           </div>
 
           <div>
-            <span className="block font-mono text-[10px] tracking-[0.2em] uppercase text-cover-muted mb-2">
+            <span
+              className={`block font-mono text-[10px] uppercase text-cover-muted mb-2 ${
+                lang === "en" ? "tracking-[0.14em]" : "tracking-[0.2em]"
+              }`}
+            >
               {copy.specs.locationLabel}
             </span>
             <p className="text-base font-bold text-cover-text">
@@ -179,7 +197,11 @@ export default function HeroCover() {
           </div>
 
           <div>
-            <span className="block font-mono text-[10px] tracking-[0.2em] uppercase text-cover-muted mb-2">
+            <span
+              className={`block font-mono text-[10px] uppercase text-cover-muted mb-2 ${
+                lang === "en" ? "tracking-[0.14em]" : "tracking-[0.2em]"
+              }`}
+            >
               {copy.specs.channelsLabel}
             </span>
             <p className="text-base font-bold text-copper-light">
