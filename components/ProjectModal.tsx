@@ -134,11 +134,6 @@ function getReadablePieceTitle(
       "fussion-section-9": "Briefing Fussion — Redes & Performance",
       "fussion-section-10": "Briefing Fussion — Mockup 3D & Dirección de Arte",
       "fussion-section-11": "Briefing Fussion — Identidad & Cierre",
-      "fussion-page-1": "Dossier Fussion — Portada (1/5)",
-      "fussion-page-2": "Dossier Fussion — Alcance (2/5)",
-      "fussion-page-3": "Dossier Fussion — Planes (3/5)",
-      "fussion-page-4": "Dossier Fussion — Entregables (4/5)",
-      "fussion-page-5": "Dossier Fussion — Cierre (5/5)",
     },
     en: {
       "Feed preview - muestra": "Feed Preview — Visual System",
@@ -193,11 +188,6 @@ function getReadablePieceTitle(
       "fussion-section-9": "Fussion Briefing — Social & Performance",
       "fussion-section-10": "Fussion Briefing — 3D Mockup & Art Direction",
       "fussion-section-11": "Fussion Briefing — Identity & Closing",
-      "fussion-page-1": "Fussion Dossier — Cover (1/5)",
-      "fussion-page-2": "Fussion Dossier — Scope (2/5)",
-      "fussion-page-3": "Fussion Dossier — Plans (3/5)",
-      "fussion-page-4": "Fussion Dossier — Deliverables (4/5)",
-      "fussion-page-5": "Fussion Dossier — Closing (5/5)",
     },
   };
 
